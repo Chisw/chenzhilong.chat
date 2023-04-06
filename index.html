@@ -10,7 +10,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  user-select: none;
+}
+
+body {
+  overflow-y: scroll;
 }
 
 .chat-container {
@@ -30,18 +33,67 @@
   height: 100vh;
   border-right: 1px solid #ddd;
   border-left: 1px solid #ddd;
-  background: #F7F7F7;
+  background: #fff;
+  user-select: none;
+  overflow-y: auto;
 }
 
-.chat-list > div {
+.chat-list-item {
+  display: flex;
   padding: 8px 12px;
   font-size: 14px;
+}
+
+.chat-list-item .item-avatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  background: #ddd;
+}
+
+.chat-list-item:hover {
+  cursor: pointer;
+  background: #fafafa;
+}
+
+.chat-list-item[data-active="true"] {
+  background: #efefef;
+}
+
+.chat-list-item .item-text {
+  flex-grow: 1;
+  margin-left: 8px;
+  width: 60%;
+}
+
+.chat-list-item .item-text .item-text-name {
+  font-size: 14px;
+}
+
+.chat-list-item .item-text .item-text-content {
+  margin-top: 4px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #aaa;
 }
 
 .chat-windows {
   flex-grow: 1;
   border-right: 1px solid #ddd;
   background: #F0EDF1;
+}
+
+.chat-window {
+  display: none;
+  user-select: none;
+}
+
+.chat-window[data-active="true"] {
+  display: block;
 }
 
 .window-title {
@@ -55,11 +107,12 @@
 }
 
 .window-scroller {
-  padding: 18px;
+  padding: 10px 18px 48px 18px;
 }
 
 .center-text {
-  margin-top: 16px;
+  margin-top: 20px;
+  padding: 8px 0;
   text-align: center;
   color: #A29FA2;
   font-size: 12px;
@@ -67,13 +120,13 @@
 
 .bubble {
   display: flex;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .bubble-avatar {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   background: #ddd;
   border-radius: 4px;
   background-size: cover;
@@ -91,29 +144,31 @@
 
 .bubble-text {
   margin-left: 12px;
-  margin-right: 20%;
+  margin-right: 48px;
 }
 
-.bubble-name {
-  margin-bottom: 4px;
+.bubble-text-name {
+  margin-bottom: 2px;
   color: #8A878A;
-  font-size: 14px;
+  font-size: 12px;
 }
 
-.bubble-content {
+.bubble-text-content {
   display: inline-block;
   position: relative;
-  padding: 8px 12px;
+  padding: 8px 14px;
   background: #fff;
   border-radius: 4px;
-  user-select: all;
+  font-weight: 300;
+  line-height: 24px;
+  text-align: justify;
 }
 
-.bubble-content::before {
+.bubble-text-content::before {
   content: "";
   display: block;
   position: absolute;
-  top: 8px;
+  top: 14px;
   left: -3px;
   width: 12px;
   height: 12px;
@@ -128,18 +183,18 @@
 
 .bubble.bubble-right .bubble-text {
   margin-right: 8px;
-  margin-left: 20%;
+  margin-left: 48px;
 }
 
-.bubble.bubble-right .bubble-name {
+.bubble.bubble-right .bubble-text-name {
   display: none;
 }
 
-.bubble.bubble-right .bubble-content {
+.bubble.bubble-right .bubble-text-content {
   background: #8AED6F;
 }
 
-.bubble.bubble-right .bubble-content::before {
+.bubble.bubble-right .bubble-text-content::before {
   left: auto;
   right: -3px;
   background: #8AED6F;
@@ -155,143 +210,269 @@
 </head>
 <body>
   <div class="chat-container">
-
-    <div class="chat-list">
-      <div>CETC-软件开发课</div>
-      <div>CETC成都事业部</div>
-    </div><!-- chat-list -->
-
-    <div class="chat-windows">
-      <div class="chat-window">
-        <div class="window-title">
-          CETC-软件开发课(27)
-        </div>
-        <div class="window-scroller">
-          <div class="center-text">昨天 08:21</div>
-
-          <div class="bubble">
-            <div class="bubble-avatar avatar-dongjun"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">董俊</div>
-              <div class="bubble-content">
-                清明节需要两个人加班，有自愿的吗？没有的话我指定咯
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble">
-            <div class="bubble-avatar avatar-dongjun"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">董俊</div>
-              <div class="bubble-content">
-                自愿报名啊，实在没人我就指定了，我也没办法，张总安排的@所有人
-              </div>
-            </div>
-          </div>
-
-          <div class="center-text">20:23</div>
-
-          <div class="bubble">
-            <div class="bubble-avatar avatar-dongjun"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">董俊</div>
-              <div class="bubble-content">
-                两天都没人说话？一个都不愿意？那我就指定了@陈志龙@陈金你们去加班吧
-              </div>
-            </div>
-          </div>
-
-          <div class="center-text">"陈金"撤回了一条消息</div>
-
-          <div class="bubble">
-            <div class="bubble-avatar avatar-dongjun"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">董俊</div>
-              <div class="bubble-content">
-                ？？你说的什么@陈金
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble bubble-right">
-            <div class="bubble-avatar avatar-chenzhilong"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">陈志龙</div>
-              <div class="bubble-content">
-                [微笑]他说他不去
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble">
-            <div class="bubble-avatar avatar-dongjun"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">董俊</div>
-              <div class="bubble-content">
-                那你去不去？
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble bubble-right">
-            <div class="bubble-avatar avatar-chenzhilong"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">陈志龙</div>
-              <div class="bubble-content">
-                我去个锤子，我加个锤子
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble bubble-right">
-            <div class="bubble-avatar avatar-chenzhilong"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">陈志龙</div>
-              <div class="bubble-content">
-                你想当哈巴狗去舔领导，麻烦别带上我们，最近那个兄弟不累，天天加班，一将无能，累死三军。他妈的设备、工艺找茬的时候你怎么不敢怼他？刘军那个傻逼屌我们的时候你怎么不敢说？就会窝里横
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble bubble-right">
-            <div class="bubble-avatar avatar-chenzhilong"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">陈志龙</div>
-              <div class="bubble-content">
-                就知道安排加班，加你妹啊。你不知道让他们升级设备，培训人员？什么问题都找我们，我们不需要休息？别他妈扯有加班费，你清明节去上24个小时，我他妈分你24个小时的加班时间
-              </div>
-            </div>
-          </div>
-
-          <div class="bubble">
-            <div class="bubble-avatar avatar-dongjun"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">董俊</div>
-              <div class="bubble-content">
-                ？
-              </div>
-            </div>
-          </div>
-
-
-          <div class="bubble bubble-right">
-            <div class="bubble-avatar avatar-chenzhilong"></div>
-            <div class="bubble-text">
-              <div class="bubble-name">陈志龙</div>
-              <div class="bubble-content">
-                打你妈的问号，不服明天就把我开了，我等着人事来找我，
-              </div>
-            </div>
-          </div>
-
-        </div><!-- window-scroller -->
-      </div>
-    </div><!-- chat-window -->
-
-  </div><!-- chat-container -->
+    <div class="chat-list"></div>
+    <div class="chat-windows"></div>
+  </div>
 </body>
 <script>
 (function() {
+  const userMap = {
+    chenzhilong: '陈志龙',
+    dongjun: '董俊',
+    liumenglong: '刘梦龙',
+    jinwenjie: '晋文杰',
+    tanqing: '谭青',
+    yongge: '勇哥',
+    chenwenlong: '陈文龙',
+    wangguohao: '王国豪',
+    zhangqian: '张千',
+    lijiang: '李江',
+    zhanglichang: '张立场',
+    lirusong: '李如松',
+    martin: 'MaRTiN',
+    huangkelin: '黄珂林',
+    chenjin: '陈金',
+    lilinlu: '李琳璐',
+    zhanghuan: '张欢',
+    songwenbo: '宋文博',
+    gongzong: '龚总',
+    ouyangzhihao: '欧阳志豪',
+    colleague1: '同事甲',
+    colleague2: '同事乙',
+    colleague3: '同事丙',
+    colleague4: '同事丁',
+    colleague5: '同事戊',
+  }
+
+  const chatList = [
+    {
+      name: 'CETC-软件开发课',
+      count: 27,
+      rows: [
+        { content: '昨天 08:21' },
+        { username: 'dongjun', content: '清明节需要两个人加班，有自愿的吗？没有的话我指定咯' },
+        { username: 'dongjun', content: '自愿报名啊，实在没人我就指定了，我也没办法，张总安排的@所有人' },
+        { content: '20:23' },
+        { username: 'dongjun', content: '两天都没人说话？一个都不愿意？那我就指定了@陈志龙@陈金你们去加班吧' },
+        { content: '"陈金"撤回了一条消息' },
+        { username: 'dongjun', content: '？？你说的什么@陈金' },
+        { username: 'chenzhilong', content: '[微笑]他说他不去' },
+        { username: 'dongjun', content: '那你去不去？' },
+        { username: 'chenzhilong', content: '我去个锤子，我加个锤子' },
+        { username: 'chenzhilong', content: '你想当哈巴狗去舔领导，麻烦别带上我们，最近那个兄弟不累，天天加班，一将无能，累死三军。他妈的设备、工艺找茬的时候你怎么不敢怼他？刘军那个傻逼屌我们的时候你怎么不敢说？就会窝里横' },
+        { username: 'chenzhilong', content: '就知道安排加班，加你妹啊。你不知道让他们升级设备，培训人员？什么问题都找我们，我们不需要休息？别他妈扯有加班费，你清明节去上24个小时，我他妈分你24个小时的加班时间' },
+        { username: 'dongjun', content: '？' },
+        { username: 'chenzhilong', content: '打你妈的问号，不服明天就把我开了，我等着人事来找我，' },
+        { username: 'chenzhilong', content: '下班以后别给我发信息打电话，更他妈别在这个破群艾特我，本来这个群是兄弟们吹牛聊天的，就你来了就逼逼工作，装什么上进，' },
+        { username: 'dongjun', content: '[微笑]我已经截图给领导了，成年人了，自己说的话自己负责' },
+        { username: 'chenzhilong', content: '好哇，我明天坐等人事来辞退我' },
+        { username: 'liumenglong', content: '+1，坐等人事，要走一起走' },
+        { username: 'jinwenjie', content: '+1，坐等人事，要走一起走' },
+        { username: 'tanqing', content: '+1，坐等人事，要走一起走' },
+        { username: 'yongge', content: '+1，坐等人事，要走一起走' },
+        { username: 'chenwenlong', content: '+1，坐等人事，要走一起走' },
+        { username: 'wangguohao', content: '+1，坐等人事，要走一起走' },
+        { username: 'liumenglong', content: '+1，坐等人事，要走一起走' },
+        { username: 'zhangqian', content: '+1，坐等人事，要走一起走' },
+        { username: 'lijiang', content: '+1，坐等人事，要走一起走' },
+        { username: 'zhanglichang', content: '+1，坐等人事，要走一起走' },
+        { username: 'lirusong', content: '+1，坐等人事，要走一起走' },
+        { username: 'martin', content: '+1，坐等人事，要走一起走' },
+      ],
+    },
+    {
+      name: 'CETC成都事业部',
+      count: 413,
+      rows: [
+        { content: '20:48' },
+        { username: 'chenzhilong', content: '各位领导，开发课的兄弟们基本上加班都是一百多个小时，这个月天天早八点上班，干到晚上十一点，加到凌晨一两点都是常有的事。我就想问问我他妈签的是劳动合同还是卖身契？生产队的驴也不敢这么使吧？？' },
+        { username: 'huangkelin', content: '注意说话语气，不要带着情绪，好好交流' },
+        { username: 'chenzhilong', content: '我他妈已经好好说话了，我他妈带情绪了吗？请原谅我吧。高高在上的黄经理，你要不要来2号楼4楼茶水间看看兄弟们都累成啥样了？就知道天天躺在家里遥控指挥？？[微笑]一点技术不懂，又不会管理，什么事都是乱作一团，协调部门都弄不下来，你当这个副经理有屁用？？难怪自从某人退休之后，一路从副总降到副经理哦，你问问手底下这些兄弟，有谁服你？' },
+        { username: 'chenzhilong', content: '一天天的拍马屁倒是勤快，帮领导办私事腿都要跑断。别来惹我，我他妈还跟你好好说话，我恨不得给你两个大逼兜' },
+        { username: 'chenzhilong', content: '我就是想问一下，我他妈签的是劳动合同还是卖身契？？不奢求你们执行国家的规定，能按照日内瓦公约对我们就不错了。操' },
+        { content: '21:10' },
+        { username: 'chenzhilong', content: '软件开发部门，23人请求辞职，联名报名己上报，请批准' },
+        { username: 'jinwenjie', content: '各位领导，请批准' },
+        { username: 'chenjin', content: '各位领导，请批准' },
+        { username: 'lilinlu', content: '硬件部门14人请求辞职，我们同软件部门一起上报告，请领导批准' },
+        { username: 'zhanghuan', content: '我们设备科有12人联名报告' },
+        { content: '22:10' },
+        { username: 'huangkelin', content: '你对公司有什么意见，可以去行政部门反应，没必要在这里说@陈志龙' },
+        { username: 'dongjun', content: '就是，你把公司群当什么？你这不是影响其他人吗' },
+        { username: 'chenzhilong', content: '我亲爱的黄经理，你别误会啊。我不仅仅是对公司有意见，我对你们两个的意见更大。恕我直言，两个傻逼，操。' },
+        { username: 'chenzhilong', content: '你他妈吃饱了没事做？大半夜还艾特，非得找骂？我请问一下二位。我们加班的时候你们在干什么？我们熬到凌晨一两点才下班的时候你们在干嘛？就指望压榨我们给你们增加业绩？在领导面前能抬起头？' },
+        { username: 'chenzhilong', content: '你们要不要去看看其他部门，人家加班的时候那个领导没有一起陪着？能同甘共苦我没有一句怨言，都是人，就你们两特殊？一天天干啥啥不行，吃饭第一名，每天去食堂都是你们俩跑最快，上辈子饿死鬼投胎啊？天天让我们加班，自己到点就跑，凭什么啊' },
+        { username: 'chenzhilong', content: '人家其他业务部的领导，亲力亲为，陪着兄弟们一起吃苦，一起加班，有事第一个上，不管是协调还是解决问题，都是做得很好。你们呢？除了安排加班还会什么？吃饭还是睡觉啊？天天提倡狼性文化，就你们这家猪一般的还提狼性文化' },
+        { username: 'chenzhilong', content: '我是不想骂人的，但是总有那么一两个人要犯贱，天天在这放你妈的螺旋彩虹屁，画个虛无缥缈的饼，操。忍一时越想想气，有本事出来继续啊。我不是针对其他人，我就是说你们俩是傻逼，不服来辩' },
+        { username: 'chenzhilong', content: '你让我加班也行，明天你们俩找个地方死一死，清明节我加班给你们上香，顺带还送花圈哦，免费的哦，都不用你给我算加班时长，也不要加班工资，共事一场，我他妈送你离开千里之外' },
+        { username: 'jinwenjie', content: '[强]强，开发课威武' },
+        { username: 'zhanghuan', content: '[微笑]虽然那啥，但是吧，你很强。我仅代表我自己支持你' },
+        { username: 'lilinlu', content: '[强]志龙强悍，吾辈楷模。威武' },
+        { username: 'songwenbo', content: '[强]厉害，虽然大家都不说话。但是大家都支持你，我们也早就看你们开发课好可怜了' },
+        { content: '22:28' },
+        { username: 'gongzong', content: '小陈，你早点休息，消消气。大家也都早点休息' },
+        { username: 'gongzong', content: '公司是一个个具体的人构成的，人无完人，难免有错和不如意的地方，我们欢迎大家提出建议和意见，批评与指证。今天的事情，我们会给大家一个交代，上班都累了，今天请好好休息' },
+        { username: 'gongzong', content: '明天上午9点，所有管理层人员停下手中的任何事情，第一会议室开会。' },
+        { username: 'gongzong', content: '没有魏征的犯颜直柬，哪来唐太宗的贞观之治。我们不要怕提意见，公司运行难免有各种各样的错误，就是要敢于提出来，毛主席也讲过工作上就是要拉拉袖子，扯扯耳朵。但是呢，我们提意见也要讲方式方法，不要伤了同事和气。' },
+        { content: '17:36' },
+        { username: 'huangkelin', content: '我在这里给开发部的同事道个歉，我在工作中确实有很多的不足。我会努力改正，以后也欢迎大家多向我提意见。' },
+        { username: 'huangkelin', content: '我在这里特别感谢陈志龙，能当面指出我的错误，以后我们一起加油，' },
+        { username: 'dongjun', content: '我也给开发部的兄弟们说一声对不起，最近确实事情比较多，没有考虑到大家的感受，以后我会改正的，欢迎大家监督。以后我在工作中有什么错误，也欢迎大家提出来啊。' },
+        { content: '19:13' },
+        { username: 'chenzhilong', content: '@黄珂林 我敬爱的黄经理，你是怎么敢这么说的啊？我教你啊，下次你发朋友圈骂我，说一定要把我搞走的时候，记得屏蔽一下可能认识我的人，省得人家给我截𠆤图过来啪啪啪的打你脸，算了，你这个猪脑子可能也不懂，说一声，我教你' },
+        { username: 'chenzhilong', content: '你在这里这么虛心受教，能给我解释一下昨晚为什么让人事把我开了吗？今天板个臭脸给谁看呢？不说我就去找其他同事的茬？' },
+        { username: 'chenzhilong', content: '还谢谢我当面指出来，我真他妈谢谢你啊，去年的王伦只是在会上说“技术的事最好还是让技术人员自己来定”，你就一脸不高兴，说技术人员决定的话，还要你这个经理干嘛。然后就给人调职，逼人家走' },
+        { username: 'chenzhilong', content: '你能决定个屁啊，你会什么啊？就说CP2的自动程序，让我们改了5次，最后一次我他妈不想改了，直接把第一版换个...' },
+        { username: 'chenzhilong', content: 'M2的项目，从立项到最终测试完毕，你参与了什么？管理了什么？上周找你签验收报告，你居然他妈的问我什么时候开始做的这个产品，你居然还有脸把你和董俊的名字加到最终报告里面，一份力不出，到了出绩效分钱的时候，你们就舔着逼脸来了？操' },
+        { username: 'chenzhilong', content: '还有我的董大哥，我的董大班长，开发部的哪儿敢做你兄弟。我们高攀不起，一天天的，左口一个他妈的，右口一个给老子怎么样怎么样的。刘哥张哥他们大你一二十岁吧，你有脸在他们面前称老子？' },
+        { username: 'chenzhilong', content: '我没记错的话，你也才30岁吧，就仗着公司里有高管是你亲戚，你就牛逼得不得了？一天天吆五喝六的，去你妈的，我可不惯你' },
+        { username: 'chenzhilong', content: '我们天天加班的时候，你们在干嘛？不奢求你们陪着我们一起干，就是在群里问候一句大家辛苦了，第二天见面关心一下总可以吧？你他妈的跑去钓鱼的时候，知不知道还有兄弟熬通宵改测试？' },
+        { username: 'chenzhilong', content: '就这还有逼脸来分我们的劳动成果？' },
+        { username: 'chenzhilong', content: '一天天的准时准点去吃饭、午休、下班，你他妈知不知道我们连给家人打个电话的时间都要没了，刘哥他们说女儿都要半个多月没见过他了，还不是你们这些傻逼搞的，' },
+        { content: '19:27' },
+        { username: 'chenzhilong', content: '这两个傻逼我都懒得说了，既然龚总说了有意见就提。那我就说了。虽然公司是国家的，你们不关心盈亏，但是能不能优化流程，很多时候都是做无意义的事，加屁用没有的班，一个CP2的流程一天就可以搞定，非要拖4天，然后玩命的催你赶出来，安排加班。有病呐。你们是不心疼加班费，我们他妈的也不想要这个加班费。' },
+        { username: 'chenjin', content: '说得好' },
+        { username: 'chenzhilong', content: '总共就两台测量仪，你他妈安排6个人加班，两个人干，4个人鼓掌啊？然后第二天还来催进度，你他妈有病吧' },
+        { username: 'ouyangzhihao', content: '就是，无意义的事太多了，明明不必加班的，管理层管着管着就开始加班了' },
+        { username: 'chenzhilong', content: '算求了，冰冻三尺非一日之寒。这不是我能理解的事' },
+        { username: 'chenzhilong', content: '虽然下午领导们没说我什么，让我好好干，但是我真的干不动了，我也想看看朝阳吹吹晚风。，今天我已经再次上交了离职报告，不需要你们批准，没交接的工作我会处理，最多待30天，当然了，你们越快同意越好' },
+        { username: 'chenzhilong', content: '虽然这两天很不开心，但是公司大多数同事都是很好的，谢谢你们支持我的工作、对我的照顾，江湖路远，有缘再见。有些傻逼出门最好看黄历，省得冤家路窄' },
+        { username: 'zhanghuan', content: '保重，江湖路远，我们后会有期' },
+        { username: 'lilinlu', content: '保重，有缘再见' },
+        { username: 'wangguohao', content: '为众人抱薪者，不可使其冻毙于风雪' },
+        { username: 'liumenglong', content: '为自由开路者，不可使其困顿于荆棘' },
+        { username: 'jinwenjie', content: '为生民立命者，不可使其殒殁于无声' },
+      ],
+    },
+    {
+      name: '同事甲',
+      count: 2,
+      rows: [
+        { content: '昨天 21:51' },
+        { username: 'colleague1', content: '[捂脸]副经理你都不放过，一点面子不给。真是天不生你，万古如长夜啊' },
+        { username: 'chenzhilong', content: '本来不想屌他的，他非要逼逼，那我能惯着他？还好昨天晚上他不在，' },
+        { username: 'chenzhilong', content: '我真怕一时忍不住，给他两个大逼兜' },
+        { username: 'colleague1', content: '哈哈，屌。现在各个群都在传说你的光辉事迹，' },
+        { username: 'colleague1', content: '明天来上班不' },
+        { username: 'chenzhilong', content: '来啊，该干嘛干嘛。不行就当面骂，去他妈的。' },
+        { username: 'colleague1', content: '控制自己的情绪，千万别动手' },
+        { username: 'chenzhilong', content: '我要是像王思聪一样有钱，昨晚我他妈得打车过去堵在他家门口骂' },
+      ],
+    },
+    {
+      name: '同事乙',
+      count: 2,
+      rows: [
+        { content: '昨天 21:42' },
+        { username: 'colleague2', content: '厉害啊，我的哥，我们都再说该选你当下一届话事人' },
+        { username: 'chenzhilong', content: '算求了，明天被不被开除都不知道' },
+        { username: 'colleague2', content: '怕什么，明天过去告诉她，你是凉山的，四川凉山的。袍哥人家，从不拉稀摆带' },
+        { username: 'chenzhilong', content: '哈哈，明天去装备部领把锤子带着防身用' },
+        { username: 'colleague2', content: '明天来上班不？早上开会你去不' },
+        { username: 'chenzhilong', content: '来啊，该干嘛干嘛。又没叫我去开会。' },
+        { username: 'chenzhilong', content: '你知道乌鸦哥嘛，我怕去了就对他们说，难办？那就别办了。直接把桌子掀了' },
+        { username: 'colleague2', content: '哈哈，会议桌可以坐三十多个人，你怕是弄不动' },
+      ],
+    },
+    {
+      name: '同事丙',
+      count: 2,
+      rows: [
+        { content: '08:05' },
+        { username: 'colleague3', content: '哥，你来公司了吗？' },
+        { username: 'chenzhilong', content: '来了啊，刚打完卡进来' },
+        { username: 'colleague3', content: '你们黄经理让你去他办公室，跟你聊聊' },
+        { username: 'chenzhilong', content: '让他自己来找我，' },
+        { username: 'colleague3', content: '他说你把他微信删了，打电话也打不通' },
+        { username: 'chenzhilong', content: '卧槽，忘了昨天把那些傻逼都删了，该拉黑的都拉黑了' },
+        { username: 'colleague3', content: '哈哈，那你去不去' },
+        { username: 'chenzhilong', content: '不去，你跟他说，老子是凉山来的，穷山恶水出刁民，嘴笨不会说，就爱动手' },
+        { username: 'colleague3', content: '好嘞' },
+      ],
+    },
+    {
+      name: '同事丁',
+      count: 2,
+      rows: [
+        { username: 'colleague4', content: '我的龙哥，你千万别为难我。如果今天让我跟你设话的话，我也只是打工人，我挺你。' },
+        { username: 'chenzhilong', content: '我又不是疯狗，逮谁咬谁，那么多人，我就只骂他们两个' },
+        { username: 'chenzhilong', content: '咋了，你们人事要叫我过去谈话了啊' },
+        { username: 'colleague4', content: '没有没有，昨天你太猛了。我估计人事部门没人敢接这个活。哈哈哈哈。' },
+        { username: 'chenzhilong', content: '我脾气很好的。要叫我过去的话，说一声' },
+        { username: 'colleague4', content: '彬哥说不敢叫你过来，就算要谈话，也得是我们买杯奶茶带包烟过去找你' },
+        { username: 'chenzhilong', content: '哈哈哈哈，他好扯犊子' },
+      ],
+    },
+    {
+      name: '同事戊',
+      count: 2,
+      rows: [
+        { username: 'colleague5', content: '今天黄经理他们两个在大会上被骂得屁话都不敢说一句' },
+        { username: 'colleague5', content: '龚总来的第一句话就是问你来上班没有' },
+        { username: 'chenzhilong', content: '你们还在开会啊' },
+        { username: 'colleague5', content: '对啊，讨论你的抖音都谈了差不多有一两个小时，努力把各种影响降到最低，你真的是太猛了' },
+        { username: 'chenzhilong', content: '那你慢慢开，我继续摸鱼' },
+        { content: '11:04' },
+        { username: 'colleague5', content: '刚刚决定了，4.5号所有上个月加班超过48小时的，都带薪休假一天' },
+        { username: 'colleague5', content: '可以连续休周三周四了，而且周末不调休，你太牛逼了，为多少人争取到了一天带薪休假' },
+        { username: 'chenzhilong', content: '那我呢？有没有说怎么办' },
+        { username: 'colleague5', content: '不知道，还在讨论，估计下午上班的时候，管理层会找你谈话' },
+      ],
+    },
+  ]
+
+  const chatListHTML = chatList.map(({ name, count, rows }, index) => `
+    <div class="chat-list-item" data-index="${index}" data-active="false">
+      <div class="item-avatar"></div>
+      <div class="item-text">
+        <div class="item-text-name">${name}</div>
+        <div class="item-text-content">${rows.at(-1).content}</div>
+      </div>
+    </div>
+  `).join('')
+
+  const widnowsHTML = chatList.map(({ name, count, rows }, index) => `
+    <div class="chat-window" data-index="${index}" data-active="false">
+      <div class="window-title">${name}${count > 2 ? `(${count})` : ''}</div>
+      <div class="window-scroller">
+        ${rows.map(({ username, content }) => {
+          return username
+            ? `
+              <div class="bubble ${username === 'chenzhilong' ? 'bubble-right' : ''}">
+                <div class="bubble-avatar avatar-${username}"></div>
+                <div class="bubble-text">
+                  ${count === 2 ? '' : `<div class="bubble-text-name">${userMap[username]}</div>`}
+                  <div class="bubble-text-content">
+                    ${content}
+                  </div>
+                </div>
+              </div>
+            `
+            : `<div class="center-text">${content}</div>`
+        }).join('')}
+      </div>
+    </div>
+  `).join('')
+
+  document.querySelector('.chat-list').innerHTML = chatListHTML
+  document.querySelector('.chat-windows').innerHTML = widnowsHTML
+
+  const chatItemElementList = Array.from(document.querySelectorAll('.chat-list .chat-list-item'))
+  const chatWindowElementList = Array.from(document.querySelectorAll('.chat-windows .chat-window'))
+
+  chatItemElementList.forEach(el => {
+    el.addEventListener('click', () => {
+      const index = +el.getAttribute('data-index')
+
+      chatItemElementList.forEach(_el => _el.setAttribute('data-active', 'false'))
+      chatWindowElementList.forEach(_el => _el.setAttribute('data-active', 'false'))
+
+      el.setAttribute('data-active', 'true')
+      chatWindowElementList[index].setAttribute('data-active', 'true')
+    })
+  })
+
+  document.querySelector('.chat-list .chat-list-item').click()
 
 }());
 </script>
