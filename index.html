@@ -693,7 +693,8 @@ a {
       chatWindowElementList[index].setAttribute('data-active', 'true')
 
       chatListMobileElement.setAttribute('data-show', 'false')
-      window.scrollTo({ top: 0 })
+      const scroller = document.querySelector('.chat-windows .chat-window[data-active="true"] .window-scroller')
+      scroller.scrollTo({ top: 0 })
     })
   })
 
