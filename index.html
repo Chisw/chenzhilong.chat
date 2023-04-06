@@ -282,6 +282,41 @@ body {
   background: #8AED6F;
 }
 
+.textarea-container {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  padding: 8px 12px;
+  width: 100%;
+  border-top: 1px solid #ddd;
+  background: rgba(244, 244, 244, .95);
+}
+
+.textarea-container textarea {
+  flex-grow: 1;
+  padding: 6px 12px;
+  width: 100%;
+  height: 32px;
+  border-radius: 4px;
+  border: none;
+  resize: none;
+  outline-color: #1ABF6A;
+}
+
+.textarea-container button {
+  flex-shrink: 0;
+  margin-left: 8px;
+  padding: 6px 20px;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  background: #1ABF6A;
+  cursor: pointer;
+}
+
 .github-link {
   position: fixed;
   z-index: 30;
@@ -554,7 +589,7 @@ body {
         </div>
         <div class="item-text">
           <div class="item-text-name">${name}</div>
-          <div class="item-text-content">${rows.at(-1).content}</div>
+          <div class="item-text-content">${rows.slice(-1)[0].content}</div>
         </div>
       </div>
     `
@@ -583,9 +618,17 @@ body {
     </div>
   `).join('')
 
+  const defaultText = '+1，坐等人事，要走一起走'
+  const textareaHTML = `
+    <div class="textarea-container">
+      <textarea placeholder="${defaultText}">${defaultText}</textarea>
+      <button class="send-button">发送</buttton>
+    </div>
+  `
+
   document.querySelector('.chat-list').innerHTML = chatListHTML
   document.querySelector('.chat-list.mobile').innerHTML = chatListHTML
-  document.querySelector('.chat-windows').innerHTML = widnowsHTML
+  document.querySelector('.chat-windows').innerHTML = widnowsHTML + textareaHTML
 
   const chatItemElementList = Array.from(document.querySelectorAll('.chat-list .chat-list-item'))
   const chatWindowElementList = Array.from(document.querySelectorAll('.chat-windows .chat-window'))
@@ -606,9 +649,24 @@ body {
     })
   })
 
-  document.addEventListener('click', ({ target }) => {
-    if (target.className.includes('window-title')) {
+  document.addEventListener('click', ({ target: { className } }) => {
+    if (className.includes('window-title')) {
       chatListMobileElement.setAttribute('data-show', 'true')
+    } else if (className.includes('send-button')) {
+
+      const bubbleElement = document.createElement('div')
+      bubbleElement.setAttribute('class', 'bubble bubble-right')
+      bubbleElement.innerHTML = `
+        <div class="user-avatar avatar-chenzhilong"></div>
+        <div class="bubble-text">
+          <div class="bubble-text-name">${userMap['chenzhilong']}</div>
+          <div class="bubble-text-content">
+            ${document.querySelector('.textarea-container textarea').value.trim() || defaultText}
+          </div>
+        </div>
+      `
+      document.querySelector('.chat-windows .chat-window[data-active="true"] .window-scroller').append(bubbleElement)
+      window.scrollTo({ top: 999999999 })
     }
   })
 
