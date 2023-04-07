@@ -1,3 +1,6 @@
+<img src="./avatar.png" style="width: 100px; height: 100px; border-radius: 8px;" />
+
+---
 # 志龙啸天录
 
 为众人抱薪者，不可使其冻毙于风雪
@@ -6,4 +9,6 @@
 
 为生民立命者，不可使其殒殁于无声
 
-文本来源：[https://c.m.163.com/news/a/I1H5KH000539SD2G.html](https://c.m.163.com/news/a/I1H5KH000539SD2G.html)
+## 文本来源
+
+[https://c.m.163.com/news/a/I1H5KH000539SD2G.html](https://c.m.163.com/news/a/I1H5KH000539SD2G.html)
