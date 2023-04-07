@@ -371,37 +371,60 @@ a {
   }
 }
 
+[data-anonymous="true"] .anonymous {
+  font-size: 0;
+}
+
+[data-anonymous="true"] .anonymous::after {
+  content: " ** ";
+  font-size: 12px;
+  line-height: 0;
+}
+
+[data-anonymous="true"] .user-avatar {
+  filter: blur(2px);
+  transform: rotate(180deg);
+}
+
 </style>
 </head>
-<body>
-  <div class="chat-container">
+<body data-anonymous="true">
+  <div class="chat-container" oncontextmenu="handleSwitch(); return false;">
     <div class="chat-list"></div>
     <div class="chat-list mobile" data-show="false"></div>
     <div class="chat-windows"></div>
   </div>
 </body>
 <script>
+
+function handleSwitch() {
+  if (window.confirm('确定要显示网络中流传的相关名称吗？')) {
+    document.body.setAttribute('data-anonymous', 'false')
+    document.body.removeAttribute('oncontextmenu')
+  }
+}
+
 (function() {
   const userMap = {
-    chenzhilong: '陈志龙',
-    dongjun: '董*',
-    liumenglong: '刘**',
-    jinwenjie: '晋**',
-    tanqing: '谭*',
+    chenzhilong: '陈<span class="anonymous">志龙</span>',
+    dongjun: '董<span class="anonymous">俊</span>',
+    liumenglong: '刘<span class="anonymous">梦龙</span>',
+    jinwenjie: '晋<span class="anonymous">文杰</span>',
+    tanqing: '谭<span class="anonymous">青</span>',
     yongge: '勇哥',
-    chenwenlong: '陈**',
-    wangguohao: '王**',
-    zhangqian: '张*',
-    lijiang: '李*',
-    zhanglichang: '张**',
-    lirusong: '李**',
+    chenwenlong: '陈<span class="anonymous">文龙</span>',
+    wangguohao: '王<span class="anonymous">国豪</span>',
+    zhangqian: '张<span class="anonymous">千</span>',
+    lijiang: '李<span class="anonymous">江</span>',
+    zhanglichang: '张<span class="anonymous">立场</span>',
+    lirusong: '李<span class="anonymous">如松</span>',
     martin: 'MaRTiN',
-    huangkelin: '黄**',
-    chenjin: '陈*',
-    lilinlu: '李**',
-    zhanghuan: '张*',
-    songwenbo: '宋**',
-    ouyangzhihao: '欧***',
+    huangkelin: '黄<span class="anonymous">珂林</span>',
+    chenjin: '陈<span class="anonymous">金</span>',
+    lilinlu: '李<span class="anonymous">琳璐</span>',
+    zhanghuan: '张<span class="anonymous">欢</span>',
+    songwenbo: '宋<span class="anonymous">文博</span>',
+    ouyangzhihao: '欧<span class="anonymous">阳志豪</span>',
     gongzong: '龚总',
     colleague1: '同事甲',
     colleague2: '同事乙',
@@ -414,20 +437,20 @@ a {
 
   const chatList = [
     {
-      name: 'C***-软件开发课',
+      name: 'C<span class="anonymous">ETC</span>-软件开发课',
       count: 27,
       rows: [
         { content: '昨天 08:21' },
         { username: 'dongjun', content: '清明节需要两个人加班，有自愿的吗？没有的话我指定咯' },
         { username: 'dongjun', content: '自愿报名啊，实在没人我就指定了，我也没办法，张总安排的@所有人' },
         { content: '20:23' },
-        { username: 'dongjun', content: '两天都没人说话？一个都不愿意？那我就指定了@陈志龙@陈金你们去加班吧' },
-        { content: '"陈金"撤回了一条消息' },
-        { username: 'dongjun', content: '？？你说的什么@陈金' },
+        { username: 'dongjun', content: '两天都没人说话？一个都不愿意？那我就指定了@陈<span class="anonymous">志龙</span>@陈<span class="anonymous">金</span>你们去加班吧' },
+        { content: '"陈<span class="anonymous">金</span>"撤回了一条消息' },
+        { username: 'dongjun', content: '？？你说的什么@陈<span class="anonymous">金</span>' },
         { username: 'chenzhilong', content: '<span class="emoji smile"></span>他说他不去' },
         { username: 'dongjun', content: '那你去不去？' },
         { username: 'chenzhilong', content: '我去个锤子，我加个锤子' },
-        { username: 'chenzhilong', content: '你想当哈巴狗去舔领导，麻烦别带上我们，最近那个兄弟不累，天天加班，一将无能，累死三军。他妈的设备、工艺找茬的时候你怎么不敢怼他？刘军那个傻逼屌我们的时候你怎么不敢说？就会窝里横' },
+        { username: 'chenzhilong', content: '你想当哈巴狗去舔领导，麻烦别带上我们，最近那个兄弟不累，天天加班，一将无能，累死三军。他妈的设备、工艺找茬的时候你怎么不敢怼他？刘<span class="anonymous">军</span>那个傻逼屌我们的时候你怎么不敢说？就会窝里横' },
         { username: 'chenzhilong', content: '就知道安排加班，加你妹啊。你不知道让他们升级设备，培训人员？什么问题都找我们，我们不需要休息？别他妈扯有加班费，你清明节去上24个小时，我他妈分你24个小时的加班时间' },
         { username: 'dongjun', content: '？' },
         { username: 'chenzhilong', content: '打你妈的问号，不服明天就把我开了，我等着人事来找我，' },
@@ -449,7 +472,7 @@ a {
       ],
     },
     {
-      name: 'C***成都事业部',
+      name: 'C<span class="anonymous">ETC</span>成都事业部',
       count: 413,
       rows: [
         { content: '20:48' },
@@ -465,7 +488,7 @@ a {
         { username: 'lilinlu', content: '硬件部门14人请求辞职，我们同软件部门一起上报告，请领导批准' },
         { username: 'zhanghuan', content: '我们设备科有12人联名报告' },
         { content: '22:10' },
-        { username: 'huangkelin', content: '你对公司有什么意见，可以去行政部门反应，没必要在这里说@陈志龙' },
+        { username: 'huangkelin', content: '你对公司有什么意见，可以去行政部门反应，没必要在这里说@陈<span class="anonymous">志龙</span>' },
         { username: 'dongjun', content: '就是，你把公司群当什么？你这不是影响其他人吗' },
         { username: 'chenzhilong', content: '我亲爱的黄经理，你别误会啊。我不仅仅是对公司有意见，我对你们两个的意见更大。恕我直言，两个傻逼，操。' },
         { username: 'chenzhilong', content: '你他妈吃饱了没事做？大半夜还艾特，非得找骂？我请问一下二位。我们加班的时候你们在干什么？我们熬到凌晨一两点才下班的时候你们在干嘛？就指望压榨我们给你们增加业绩？在领导面前能抬起头？' },
@@ -484,14 +507,14 @@ a {
         { username: 'gongzong', content: '没有魏征的犯颜直柬，哪来唐太宗的贞观之治。我们不要怕提意见，公司运行难免有各种各样的错误，就是要敢于提出来，毛主席也讲过工作上就是要拉拉袖子，扯扯耳朵。但是呢，我们提意见也要讲方式方法，不要伤了同事和气。' },
         { content: '17:36' },
         { username: 'huangkelin', content: '我在这里给开发部的同事道个歉，我在工作中确实有很多的不足。我会努力改正，以后也欢迎大家多向我提意见。' },
-        { username: 'huangkelin', content: '我在这里特别感谢陈志龙，能当面指出我的错误，以后我们一起加油，' },
+        { username: 'huangkelin', content: '我在这里特别感谢陈<span class="anonymous">志龙</span>，能当面指出我的错误，以后我们一起加油，' },
         { username: 'dongjun', content: '我也给开发部的兄弟们说一声对不起，最近确实事情比较多，没有考虑到大家的感受，以后我会改正的，欢迎大家监督。以后我在工作中有什么错误，也欢迎大家提出来啊。' },
         { content: '19:13' },
-        { username: 'chenzhilong', content: '@黄珂林 我敬爱的黄经理，你是怎么敢这么说的啊？我教你啊，下次你发朋友圈骂我，说一定要把我搞走的时候，记得屏蔽一下可能认识我的人，省得人家给我截个图过来啪啪啪的打你脸，算了，你这个猪脑子可能也不懂，说一声，我教你' },
+        { username: 'chenzhilong', content: '@黄<span class="anonymous">珂林</span> 我敬爱的黄经理，你是怎么敢这么说的啊？我教你啊，下次你发朋友圈骂我，说一定要把我搞走的时候，记得屏蔽一下可能认识我的人，省得人家给我截个图过来啪啪啪的打你脸，算了，你这个猪脑子可能也不懂，说一声，我教你' },
         { username: 'chenzhilong', content: '你在这里这么虚心受教，能给我解释一下昨晚为什么让人事把我开了吗？今天板个臭脸给谁看呢？不说我就去找其他同事的茬？' },
-        { username: 'chenzhilong', content: '还谢谢我当面指出来，我真他妈谢谢你啊，去年的王伦只是在会上说“技术的事最好还是让技术人员自己来定”，你就一脸不高兴，说技术人员决定的话，还要你这个经理干嘛。然后就给人调职，逼人家走' },
+        { username: 'chenzhilong', content: '还谢谢我当面指出来，我真他妈谢谢你啊，去年的王<span class="anonymous">伦</span>只是在会上说“技术的事最好还是让技术人员自己来定”，你就一脸不高兴，说技术人员决定的话，还要你这个经理干嘛。然后就给人调职，逼人家走' },
         { username: 'chenzhilong', content: '你能决定个屁啊，你会什么啊？就说CP2的自动程序，让我们改了5次，最后一次我他妈不想改了，直接把第一版换个...' },
-        { username: 'chenzhilong', content: 'M2的项目，从立项到最终测试完毕，你参与了什么？管理了什么？上周找你签验收报告，你居然他妈的问我什么时候开始做的这个产品，你居然还有脸把你和董俊的名字加到最终报告里面，一份力不出，到了出绩效分钱的时候，你们就舔着逼脸来了？操' },
+        { username: 'chenzhilong', content: 'M2的项目，从立项到最终测试完毕，你参与了什么？管理了什么？上周找你签验收报告，你居然他妈的问我什么时候开始做的这个产品，你居然还有脸把你和董<span class="anonymous">俊</span>的名字加到最终报告里面，一份力不出，到了出绩效分钱的时候，你们就舔着逼脸来了？操' },
         { username: 'chenzhilong', content: '还有我的董大哥，我的董大班长，开发部的哪儿敢做你兄弟。我们高攀不起，一天天的，左口一个他妈的，右口一个给老子怎么样怎么样的。刘哥张哥他们大你一二十岁吧，你有脸在他们面前称老子？' },
         { username: 'chenzhilong', content: '我没记错的话，你也才30岁吧，就仗着公司里有高管是你亲戚，你就牛逼得不得了？一天天吆五喝六的，去你妈的，我可不惯你' },
         { username: 'chenzhilong', content: '我们天天加班的时候，你们在干嘛？不奢求你们陪着我们一起干，就是在群里问候一句大家辛苦了，第二天见面关心一下总可以吧？你他妈的跑去钓鱼的时候，知不知道还有兄弟熬通宵改测试？' },
@@ -608,11 +631,10 @@ a {
       count: 2,
       rows: [
         { content: '22:32' },
-        { username: 'chisw', content: '龙哥，你太屌了，我把你的语录做成一个小网站了' },
+        { username: 'chisw', content: '龙哥，你太屌了，我把你的语录做成了一个小网站' },
         { username: 'chisw', content: 'V 站的帖子 <a href="https://www.v2ex.com/t/930265" target="_blank">https://www.v2ex.com/t/930265</a>' },
-        { username: 'chisw', content: 'GitHub 给个 Star 呗 <a href="https://github.com/Chisw/chenzhilong.chat" target="_blank">https://github.com/Chisw/chenzhilong.chat</a>' },
         { username: 'chenzhilong', content: '<span class="emoji smile"></span>栓Q' },
-        { username: 'chisw', content: '请我喝可乐也行 <a href="https://jisuowei.com/cola?from=czl" target="_blank">https://jisuowei.com/cola</a>' },
+        { username: 'chisw', content: 'GitHub 给个 Star 呗 <a href="https://github.com/Chisw/chenzhilong.chat" target="_blank">https://github.com/Chisw/chenzhilong.chat</a>' },
         { username: 'chenzhilong', content: '好的，我知道了' },
       ],
     },
